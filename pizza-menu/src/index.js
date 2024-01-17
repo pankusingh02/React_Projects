@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import './index.css'
+import "./index.css";
 const pizzaData = [
   {
     name: "Focaccia",
@@ -64,7 +64,9 @@ function Header() {
   );
 }
 function Menu() {
-  return (
+  const pizzas = [];
+  const numPizzas = pizzas.length;
+  return numPizzas ? (
     <main className="menu">
       <h2> Our Menu</h2>
       <ul className="pizzas">
@@ -73,20 +75,21 @@ function Menu() {
         ))}
       </ul>
     </main>
-  );
+  ) : null;
 }
 
 function Pizza(props) {
-
   console.log(props);
-  return(<li className="pizza">
-    <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
-    <div>
-      <h3>{props.pizzaObj.name}</h3>
-      <h3>{props.pizzaObj.ingredients}</h3>
-      <h3>{props.pizzaObj.price}</h3>
-    </div>
-  </li>)
+  return (
+    <li className="pizza">
+      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+      <div>
+        <h3>{props.pizzaObj.name}</h3>
+        <h3>{props.pizzaObj.ingredients}</h3>
+        <h3>{props.pizzaObj.price}</h3>
+      </div>
+    </li>
+  );
 }
 
 function Footer() {
@@ -100,14 +103,19 @@ function Footer() {
   // else alert("Sorry we're closed");
 
   // if (!isOpen) return <p>CLOSED</p>;
-
   return (
     <footer className="footer">
       {isOpen ? (
-        <Order closeHour={closeHour} openHour={openHour} />
+        <div className="order">
+          {" "}
+          <p>
+            We're open until {closeHour}:00 come visit us or order online
+          </p>{" "}
+          <button className="btn">Order</button>
+        </div>
       ) : (
         <p>
-          We're happy to welcome you between {openHour}:00 and {closeHour}:00.
+          We are happy to welcome you between {isOpen}:00 to {closeHour}:00
         </p>
       )}
     </footer>
@@ -115,22 +123,23 @@ function Footer() {
 
   // return React.createElement("footer", null, "We're currently open!");
 }
-function Order({ closeHour, openHour }) {
-  return (
-    <div className="order">
-      <p>
-        We're open from {openHour}:00 to {closeHour}:00. Come visit us or order
-        online.
-      </p>
-      <button className="btn">Order</button>
-    </div>
-  );
-}
+
+// function Order({ closeHour, openHour }) {
+//   return (
+//     <div className="order">
+//       <p>
+//         We're open from {openHour}:00 to {closeHour}:00. Come visit us or order
+//         online.
+//       </p>
+//       <button className="btn">Order</button>
+//     </div>
+//   );
+// }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <App/>
-  </React.StrictMode>
+    <App />
+  </React.StrictMode>,
 );
