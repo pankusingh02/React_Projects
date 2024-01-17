@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
+import './index.css'
 const pizzaData = [
   {
     name: "Focaccia",
@@ -48,22 +48,82 @@ const pizzaData = [
 
 function App() {
   return (
-    <div>
-      <h1> Hello React</h1>
-      <Pizza />
-      <Pizza />
-      <Pizza />
-      <Pizza />
+    <div className="container">
+      <Header />
+      <Menu />
+      <Footer />
     </div>
   );
 }
-
-function Pizza() {
+function Header() {
+  const style = {};
   return (
-    <>
-      <img src="pizzas/spinaci.jpg" alt="pizza" />
-      <h2>Spinach Pizza</h2>
-    </>
+    <header>
+      <h1 style={style}>Fast React Pizza Co.</h1>
+    </header>
+  );
+}
+function Menu() {
+  return (
+    <main className="menu">
+      <h2> Our Menu</h2>
+      <ul className="pizzas">
+        {pizzaData.map((pizza) => (
+          <Pizza pizzaObj={pizza} key={pizza.name} />
+        ))}
+      </ul>
+    </main>
+  );
+}
+
+function Pizza(props) {
+
+  console.log(props);
+  return(<li className="pizza">
+    <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+    <div>
+      <h3>{props.pizzaObj.name}</h3>
+      <h3>{props.pizzaObj.ingredients}</h3>
+      <h3>{props.pizzaObj.price}</h3>
+    </div>
+  </li>)
+}
+
+function Footer() {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
+  console.log(isOpen);
+
+  // if (hour >= openHour && hour <= closeHour) alert("We're currently open!");
+  // else alert("Sorry we're closed");
+
+  // if (!isOpen) return <p>CLOSED</p>;
+
+  return (
+    <footer className="footer">
+      {isOpen ? (
+        <Order closeHour={closeHour} openHour={openHour} />
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00.
+        </p>
+      )}
+    </footer>
+  );
+
+  // return React.createElement("footer", null, "We're currently open!");
+}
+function Order({ closeHour, openHour }) {
+  return (
+    <div className="order">
+      <p>
+        We're open from {openHour}:00 to {closeHour}:00. Come visit us or order
+        online.
+      </p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 
@@ -71,6 +131,6 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <App />
+    <App/>
   </React.StrictMode>
 );
