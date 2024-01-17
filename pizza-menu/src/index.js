@@ -64,7 +64,7 @@ function Header() {
   );
 }
 function Menu() {
-  const pizzas = [];
+  const pizzas = pizzaData;
   const numPizzas = pizzas.length;
   return numPizzas ? (
     <main className="menu">
@@ -96,6 +96,7 @@ function Footer() {
   const hour = new Date().getHours();
   const openHour = 12;
   const closeHour = 22;
+  console.log(hour);
   const isOpen = hour >= openHour && hour <= closeHour;
   console.log(isOpen);
 
