@@ -1,4 +1,13 @@
-import { useState } from "react";
+// import { useState } from "react";
+
+const initialItems = [
+  { id: 1, description: "Passports", quantity: 2, packed: false },
+  { id: 2, description: "Socks", quantity: 12, packed: true },
+  { id: 3, description: "keys", quantity: 3, packed: true },
+  { id: 4, description: "bags", quantity: 4, packed: false },
+  { id: 5, description: "clothes", quantity: 5, packed: true },
+];
+
 export default function App() {
   return (
     <>
@@ -17,17 +26,39 @@ function Logo() {
 
 function Form() {
   return (
-    <div className="add-form">
+    <form className="add-form">
       <h3>What do you need for your trip</h3>
-    </div>
+      <select>
+        {Array.from({length:20},(_,i)=> i+1)}
+      </select>
+      <input type="text" placeholder="item..."></input>
+      <button>Add</button>
+    </form>
   );
 }
 
 function PackingList() {
   return (
-    <div className="list" style={{ height: "0vh" }}>
-      This is packing list
+    <div className="list" style={{ height: "57vh" }}>
+      <ul>
+        {initialItems.map((item) => (
+          <Item item={item} key={item.id} />
+        ))}
+      </ul>
     </div>
+  );
+}
+function Item(item) {
+  console.log("item=====>", item);
+  console.log("item.description", item.item.description);
+  return (
+    <li>
+      <span style={item.item.packed ? { textDecoration: "line-through" } : {}}>
+        {item.item.quantity}
+        {item.item.description}
+      </span>
+      <button>❌</button>
+    </li>
   );
 }
 
