@@ -16,6 +16,7 @@ export default function App() {
       <PackingList />
       <Stats />
       {/* <Counter /> */}
+      {/*<FlashCards /> */}
     </>
   );
 }
@@ -33,18 +34,18 @@ function Form() {
    */
   function handleSubmit(e) {
     /**
-     * why we are using prevent deafault. 
-     * After pressing the enter the default behaiour of the browser 
+     * why we are using prevent deafault.
+     * After pressing the enter the default behaiour of the browser
      * is to reload the site. and we prevent this default behaiour by using e.preventDefault()
-     * 
+     *
      */
-    e.preventDefault(); 
+    e.preventDefault();
     if (!description || !select) return;
 
     const item = { description, select, packed: false, id: Date.now() };
     console.log(item);
-    setDescription('');
-    setSelect('');
+    setDescription("");
+    setSelect("");
   }
   return (
     <form className="add-form" onSubmit={handleSubmit}>
@@ -83,7 +84,7 @@ function PackingList() {
     </div>
   );
 }
-function Item({item}) {
+function Item({ item }) {
   console.log("item=====>", item);
   console.log("item.description", item.description);
   return (
@@ -147,3 +148,66 @@ function Stats() {
 //     </div>
 //   );
 // }
+
+/** Lecture 75 FlashCard
+ * 
+ *        const questions = [
+  {
+    id: 3457,
+    question: "What language is React based on?",
+    answer: "JavaScript",
+  },
+  {
+    id: 7336,
+    question: "What are the building blocks of React apps?",
+    answer: "Components",
+  },
+  {
+    id: 8832,
+    question: "What's the name of the syntax we use to describe a UI in React?",
+    answer: "JSX",
+  },
+  {
+    id: 1297,
+    question: "How to pass data from parent to child components?",
+    answer: "Props",
+  },
+  {
+    id: 9103,
+    question: "How to give components memory?",
+    answer: "useState hook",
+  },
+  {
+    id: 2002,
+    question:
+      "What do we call an input element that is completely synchronised with state?",
+    answer: "Controlled element",
+  },
+];
+
+function FlashCards() {
+
+  const [selectedId, setSelectedId] = React.useState(null)
+  function handleClick(id) {
+    setSelectedId(id)
+  }
+  return (
+    <div
+      className="flashcards"
+    >
+      {questions.map((question) => {
+        return (
+          <div
+            onClick={() => handleClick(question.id)} /** 
+            insted of calling the funtion directly onClick={handleClick} why we are doing like this onClick={() => handleClick(question.id)}. Because div will direclty call the function without even executing the onClick event. So we have to pass in a function rather then calling the function directly. passing the function will only call the function when the onClick event will happen.
+            
+            className={question.id === selectedId ? 'selected' : ""}>
+            <p>{question.id === selectedId ? question.answer : question.question}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+ */
