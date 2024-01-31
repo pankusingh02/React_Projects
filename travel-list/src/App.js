@@ -9,16 +9,22 @@ import { useState } from "react";
 // ];
 
 export default function App() {
-  const [items,setItems]=useState([]);
-  function handleAddItems(item){
-    setItems((items)=>[...items,item])
+  const [items, setItems] = useState([]);
+
+  function handleAddItems(item) {
+    setItems((items) => [...items, item]);
   }
+
+  function handleDeleteItem(id) {
+    setItems((items) => items.filter((item) => item.id !== id));
+  }
+  console.log("items=====>", items);
 
   return (
     <>
       <Logo />
-      <Form onAddItems={handleAddItems}/>
-      <PackingList items={items}/>
+      <Form onAddItems={handleAddItems} />
+      <PackingList items={items} onDeleteItem={handleDeleteItem} />
       <Stats />
       {/* <Counter /> */}
       {/*<FlashCards /> */}
@@ -30,11 +36,10 @@ function Logo() {
   return <h1>🏝️FAR AWAY🧳</h1>;
 }
 
-function Form({onAddItems}) {
+function Form({ onAddItems }) {
   const [description, setDescription] = useState("");
   const [select, setSelect] = useState(1);
-  
-  
+
   /**
    *
    * Controlled elements techniqiue
@@ -50,8 +55,8 @@ function Form({onAddItems}) {
     if (!description) return;
 
     const newItem = { description, select, packed: false, id: Date.now() };
-    console.log(newItem); 
-    onAddItems(newItem)
+    console.log(newItem);
+    onAddItems(newItem);
     setDescription("");
     setSelect(1);
   }
@@ -81,27 +86,24 @@ function Form({onAddItems}) {
   );
 }
 
-function PackingList({items}) {
+function PackingList({ items, onDeleteItem }) {
   return (
     <div className="list" style={{ height: "57vh" }}>
       <ul>
         {items.map((item) => (
-          <Item item={item} key={item.id} />
+          <Item onDeleteItem={onDeleteItem} item={item} key={item.id} />
         ))}
       </ul>
     </div>
   );
 }
-function Item({ item }) {
-  console.log("item=====>", item);
-  console.log("item.description", item.description);
+function Item({ item, onDeleteItem }) {
   return (
     <li>
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
-        {item.select} {' '}
-        {item.description}
+        {item.select} {item.description}
       </span>
-      <button>❌</button>
+      <button onClick={() => onDeleteItem(item.id)}>❌</button>
     </li>
   );
 }
