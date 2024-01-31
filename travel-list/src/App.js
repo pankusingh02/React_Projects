@@ -20,11 +20,15 @@ export default function App() {
   }
   console.log("items=====>", items);
 
+  function handleToggleItem(id){
+    setItems((items)=>items.map((item)=> item.id===id ? {...item, packed: !item.packed}: item))
+  }
+
   return (
     <>
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} onDeleteItem={handleDeleteItem} />
+      <PackingList items={items} onDeleteItem={handleDeleteItem} onToggleItem={handleToggleItem}/>
       <Stats />
       {/* <Counter /> */}
       {/*<FlashCards /> */}
@@ -42,7 +46,7 @@ function Form({ onAddItems }) {
 
   /**
    *
-   * Controlled elements techniqiue
+   * Controlled elements techniqiue by using the value of state and setstate on value and onChange handle.
    */
   function handleSubmit(e) {
     /**
@@ -86,20 +90,25 @@ function Form({ onAddItems }) {
   );
 }
 
-function PackingList({ items, onDeleteItem }) {
+function PackingList({ items, onDeleteItem, onToggleItem }) {
   return (
     <div className="list" style={{ height: "57vh" }}>
       <ul>
         {items.map((item) => (
-          <Item onDeleteItem={onDeleteItem} item={item} key={item.id} />
+          <Item onDeleteItem={onDeleteItem} item={item} onToggleItem={onToggleItem}key={item.id} />
         ))}
       </ul>
     </div>
   );
+
+  /***
+   * Important..line 112: when item.packed is true textDecoration:"line-through"
+   */
 }
-function Item({ item, onDeleteItem }) {
+function Item({ item, onDeleteItem ,onToggleItem }) {
   return (
     <li>
+      <input type="checkbox" value={item.packed} onChange={()=>onToggleItem(item.id)}/>
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.select} {item.description}
       </span>
