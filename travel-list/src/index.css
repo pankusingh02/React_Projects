@@ -74,7 +74,7 @@ input {
   background-color: #5a3e2b;
   color: #ffebb3;
   padding: 4rem 0;
-
+  height: 80vh;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -129,6 +129,9 @@ input[type="checkbox"] {
   text-align: center;
   font-weight: 700;
   padding: 3.2rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
 /** Flashcard CSS

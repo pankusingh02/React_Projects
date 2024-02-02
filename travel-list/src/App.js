@@ -92,7 +92,7 @@ function Form({ onAddItems }) {
 
 function PackingList({ items, onDeleteItem, onToggleItem }) {
   return (
-    <div className="list" style={{ height: "57vh" }}>
+    <div className="list">
       <ul>
         {items.map((item) => (
           <Item onDeleteItem={onDeleteItem} item={item} onToggleItem={onToggleItem}key={item.id} />
