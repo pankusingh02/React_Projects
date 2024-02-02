@@ -29,7 +29,7 @@ export default function App() {
       <Logo />
       <Form onAddItems={handleAddItems} />
       <PackingList items={items} onDeleteItem={handleDeleteItem} onToggleItem={handleToggleItem}/>
-      <Stats />
+      <Stats items={items} />
       {/* <Counter /> */}
       {/*<FlashCards /> */}
     </>
@@ -86,24 +86,43 @@ function Form({ onAddItems }) {
         onChange={(e) => setDescription(e.target.value)}
       ></input>
       <button>Add</button>
+    
     </form>
   );
 }
 
 function PackingList({ items, onDeleteItem, onToggleItem }) {
+  
+  const [sortBy,setSortBy]=useState('input')
+  let sortedItems;
+  if(sortBy==="input") sortedItems=items;
+  if(sortBy==="description") sortedItems=items.slice().sort((a,b)=>a.description.localeCompare(b.description));
+  if(sortBy==="packed") sortedItems=items.slice().sort((a,b)=> Number(a.packed)-Number(b.packed));
+
   return (
     <div className="list">
       <ul>
-        {items.map((item) => (
+        {sortedItems.map((item) => (
           <Item onDeleteItem={onDeleteItem} item={item} onToggleItem={onToggleItem}key={item.id} />
         ))}
       </ul>
+      <div className="actions">
+    <select value={sortBy} onChange={(e)=>setSortBy(e.target.value)}>
+      <option value='input'>Sort by input order</option>
+      <option value='description'>Sort by description</option>
+      <option value='packed'>Sort by status</option>
+
+    </select>
     </div>
+    </div>
+    
   );
 
   /***
    * Important..line 112: when item.packed is true textDecoration:"line-through"
    */
+
+
 }
 function Item({ item, onDeleteItem ,onToggleItem }) {
   return (
@@ -117,10 +136,23 @@ function Item({ item, onDeleteItem ,onToggleItem }) {
   );
 }
 
-function Stats() {
+function Stats({items}) {
+  if(!items.length){
+    return(
+      <p className='stats'>
+        <em> Start adding some items to your packing list</em>
+      </p>
+    )
+  }
+  const itmLength=items.length;
+  const packedItems= items.filter((itme)=> itme.packed)
+
+  const percentage = Math.round((packedItems.length/itmLength)*100)
+  
   return (
+    
     <footer className="stats">
-      <em>This is stats</em>;
+      <em>{percentage===100?"You'v got everything covered": `You have ${itmLength} items in the bag and you have already packed ${packedItems.length}(${percentage}%) `}</em>;
     </footer>
   );
 }
