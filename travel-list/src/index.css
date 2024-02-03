@@ -76,7 +76,7 @@ input {
   padding: 4rem 0 16rem 0;
   height: 80vh;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   flex-direction: column;
   gap: 3.2rem;
   align-items: center;
