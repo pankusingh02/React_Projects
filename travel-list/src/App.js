@@ -1,4 +1,8 @@
 import { useState } from "react";
+import Logo from "./Logo";
+import Form from "./Form";
+import PackingList from "./PackingList";
+import Stats from "./Stats";
 
 // const initialItems = [
 //   { id: 1, description: "Passports", quantity: 2, packed: false },
@@ -50,144 +54,6 @@ export default function App() {
   );
 }
 
-function Logo() {
-  return <h1>🏝️FAR AWAY🧳</h1>;
-}
-
-function Form({ onAddItems }) {
-  const [description, setDescription] = useState("");
-  const [select, setSelect] = useState(1);
-
-  /**
-   *
-   * Controlled elements techniqiue by using the value of state and setstate on value and onChange handle.
-   */
-  function handleSubmit(e) {
-    /**
-     * why we are using prevent deafault.
-     * After pressing the enter the default behaiour of the browser
-     * is to reload the site. and we prevent this default behaiour by using e.preventDefault()
-     *
-     */
-    e.preventDefault();
-    if (!description) return;
-
-    const newItem = { description, select, packed: false, id: Date.now() };
-    console.log(newItem);
-    onAddItems(newItem);
-    setDescription("");
-    setSelect(1);
-  }
-  return (
-    <form className="add-form" onSubmit={handleSubmit}>
-      {/** onSubmit evenet is whn we sumbit it by suing "Enter" onSubmit={handleSubmit} is like onSubmit={(e){handleSubmit(e)}} when we'll submit it will proprgate an event*/}
-      <h3>What do you need for your trip</h3>
-      <select
-        placeholder="1"
-        value={Number(select)}
-        onChange={(e) => setSelect(Number(e.target.value))}
-      >
-        {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
-          <option value={num} key={num}>
-            {num}
-          </option>
-        ))}
-      </select>
-      <input
-        type="text"
-        placeholder="item..."
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      ></input>
-      <button>Add</button>
-    </form>
-  );
-}
-
-function PackingList({ items, onDeleteItem, onToggleItem, onClearItems }) {
-  const [sortBy, setSortBy] = useState("input");
-  let sortedItems;
-  if (sortBy === "input") sortedItems = items;
-  if (sortBy === "description")
-    sortedItems = items
-      .slice()
-      .sort((a, b) => a.description.localeCompare(b.description));
-  if (sortBy === "packed")
-    sortedItems = items
-      .slice()
-      .sort((a, b) => Number(a.packed) - Number(b.packed));
-
-  return (
-    <div className="list">
-      {items.length > 0 ? (
-        <div className="actions">
-          <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-            <option value="input">Sort by input order</option>
-            <option value="description">Sort by description</option>
-            <option value="packed">Sort by status</option>
-          </select>
-          <button onClick={onClearItems}>Clear List</button>
-        </div>
-      ) : (
-        ""
-      )}
-      <ul>
-        {sortedItems.map((item) => (
-          <Item
-            onDeleteItem={onDeleteItem}
-            item={item}
-            onToggleItem={onToggleItem}
-            key={item.id}
-          />
-        ))}
-      </ul>
-    </div>
-  );
-
-  /***
-   * Important..line 112: when item.packed is true textDecoration:"line-through"
-   */
-}
-function Item({ item, onDeleteItem, onToggleItem }) {
-  return (
-    <li>
-      <input
-        type="checkbox"
-        value={item.packed}
-        onChange={() => onToggleItem(item.id)}
-      />
-      <span style={item.packed ? { textDecoration: "line-through" } : {}}>
-        {item.select} {item.description}
-      </span>
-      <button onClick={() => onDeleteItem(item.id)}>❌</button>
-    </li>
-  );
-}
-
-function Stats({ items }) {
-  if (!items.length) {
-    return (
-      <p className="stats">
-        <em> Start adding some items to your packing list</em>
-      </p>
-    );
-  }
-  const itmLength = items.length;
-  const packedItems = items.filter((itme) => itme.packed);
-
-  const percentage = Math.round((packedItems.length / itmLength) * 100);
-
-  return (
-    <footer className="stats">
-      <em>
-        {percentage === 100
-          ? "You'v got everything covered"
-          : `You have ${itmLength} items in the bag and you have already packed ${packedItems.length}(${percentage}%) `}
-      </em>
-      ;
-    </footer>
-  );
-}
 // function Counter() {
 //   const [count, setCount] = useState(0);
 //   const [steps, setSteps] = useState(1);
