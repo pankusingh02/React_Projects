@@ -41,6 +41,7 @@ body {
   border-radius: 7px;
   font-weight: bold;
   cursor: pointer;
+  margin-top: 20px;
   transition: 0.3s;
 }
 
