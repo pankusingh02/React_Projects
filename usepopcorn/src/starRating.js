@@ -1,3 +1,24 @@
+/**
+ * What's the difference between this code:
+
+<button onClick={()=>props.submitHandler(searchInputValue)}>Submit</button>
+and
+<button onClick={props.submitHandler(searchInputValue)}>Submit</button>
+----------------------------------------
+
+In first one:
+
+<button onClick={()=>props.submitHandler(searchInputValue)}>Submit</button>
+This is arrow function and it will trigger only onClick of the button.
+
+In second one:
+
+<button onClick={props.submitHandler(searchInputValue)}>Submit</button>
+This is a normal function call , which calls the method as soon the rendering of the component happens.
+ 
+
+*/
+
 import { useState } from "react";
 import PropTypes from "prop-types";
 
@@ -20,6 +41,10 @@ export default function StarRating({ maxRating = 5 }) {
     // fontSize: `${size / 1.5}px`,
   };
 
+  // function handleRating() {
+  //   setRating(rating);
+  // }
+
   return (
     <div style={containerStyle}>
       <div style={starContainerStyle}>
@@ -31,8 +56,8 @@ export default function StarRating({ maxRating = 5 }) {
             } /**rating will get set using the setRating , then every element will check wheather it is 
             greater then rating or not. if it is greater then rating then the "full" value willbe "true" otherwise "false" */
             onClick={() => setRating(i + 1)}
-            onHoverIn={setTempRating(i + 1)}
-            onHoverOut={setTempRating(0)}
+            onHoverIn={() => setTempRating(i + 1)}
+            onHoverOut={() => setTempRating(0)}
           />
         ))}
       </div>
