@@ -82,6 +82,10 @@ function TabContent({ item }) {
     console.log(likes); // It will return the previous state of the 'Like' not the new state (0). Beacause react state are async
   }
 
+  function handleUndoLater() {
+    setTimeout(handleUndo, 2000);
+  }
+
   return (
     <div className="tab-content">
       <h4>{item.summary}</h4>
@@ -101,7 +105,7 @@ function TabContent({ item }) {
 
       <div className="tab-undo">
         <button onClick={handleUndo}>Undo</button>
-        <button>Undo in 2s</button>
+        <button onClick={handleUndoLater}>Undo in 2s</button>
       </div>
     </div>
   );
