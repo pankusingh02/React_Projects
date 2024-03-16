@@ -1,11 +1,4 @@
-/**
- * Removing Boiler Plate code with class fields
- *
- * instead of binding the event hadler we can use the Arrow function, You cannot rebind this in an arrow function.
- */
-
 import React from "react";
-
 function getWeatherIcon(wmoCode) {
   const icons = new Map([
     [[0], "☀️"],
@@ -42,16 +35,15 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: "",
+      location: "india",
       isLoading: false,
       displayLocation: "",
       weather: {},
     };
-    //this.fetchWeather = this.fetchWeather.bind(this);
+    this.fetchWeather = this.fetchWeather.bind(this);
   }
 
-  fetchWeather = async () => {
-    if (this.state.location.length < 2) return this.setState({ weather: {} });
+  async fetchWeather() {
     try {
       this.setState({ isLoading: true });
       // 1) Getting location (geocoding)
@@ -59,6 +51,7 @@ class App extends React.Component {
         `https://geocoding-api.open-meteo.com/v1/search?name=${this.state.location}`
       );
       const geoData = await geoRes.json();
+      console.log(geoData);
 
       if (!geoData.results) throw new Error("Location not found");
 
@@ -75,29 +68,12 @@ class App extends React.Component {
       const weatherData = await weatherRes.json();
       this.setState({ weather: weatherData.daily });
     } catch (err) {
-      console.error(err);
+      console.err(err);
     } finally {
       this.setState({ isLoading: false });
     }
-  };
-
-  // We have lifecycle method to perform side effects in class conponet
-  // componentDidMount is like useEffect but without dependency array[] and re-rendering
-  // it'll only work once or on the intial render
-
-  componentDidMount() {
-    // this.fetchWeather();
-    this.setState({ location: localStorage.getItem("location") || "" });
   }
 
-  // componentDidUpdate (){} ==> it'll only re-render when there will be any change in state or props. It'll not render on initla mount
-
-  componentDidUpdate(prevProps, preState) {
-    if (this.state.location !== preState.location) {
-      this.fetchWeather();
-    }
-    localStorage.setItem("location", this.state.location);
-  }
   render() {
     return (
       <div className="app">
@@ -110,7 +86,7 @@ class App extends React.Component {
             onChange={(e) => this.setState({ location: e.target.value })}
           ></input>
         </div>
-        {/* <button onClick={this.fetchWeather}>Get Weather</button> */}
+        <button onClick={this.fetchWeather}>Get Weather</button>
         {this.state.isLoading && <p className="loader">Loading ...</p>}
         {this.state.weather.weathercode && (
           <Weather
@@ -124,7 +100,6 @@ class App extends React.Component {
 }
 
 class Weather extends React.Component {
-  componentWillUnmount() {}
   //*** When we dont need to intialise the state or we dont need to bind the this keywoerd to event hadnler methos then
   //we dont need to use constructor
   // constructor(props) {
@@ -138,6 +113,7 @@ class Weather extends React.Component {
       weathercode: codes,
     } = this.props.weather;
 
+    console.log("Here is props =====>", this.props);
     return (
       <div>
         <h2>Weather {this.props.location}</h2>
@@ -163,6 +139,7 @@ class Weather extends React.Component {
 class Day extends React.Component {
   render() {
     const { date, min, max, isToday, code } = this.props;
+    console.log("ate, min, max, isToday, code", date, min, max, isToday, code);
     return (
       <li className="day">
         <span>{getWeatherIcon(code)}</span>
