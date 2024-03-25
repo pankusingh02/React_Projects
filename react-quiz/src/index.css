@@ -7,6 +7,11 @@
   --color-theme: #1098ad;
   --color-accent: #ffa94d;
 }
+.top-component{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 @import url("https://fonts.googleapis.com/css2?family=Codystar&display=swap");
 
