@@ -12,6 +12,8 @@ import StartScreen from "./StartScreen";
 import Question from "./Question";
 import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
+import Footer from "./Footer";
+import Timer from "./Timer";
 
 const intialState = {
   questions: [],
@@ -20,6 +22,7 @@ const intialState = {
   status: "loading",
   answer: null,
   points: 0,
+  secondsRemaining: 10,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -46,10 +49,15 @@ function reducer(state, action) {
     case "restart":
       return {
         ...state,
-        questions: state.questions,
         status: "ready",
-        index: null,
+        index: 0,
         points: 0,
+        answer: null,
+      };
+    case "tick":
+      return {
+        ...state,
+        secondsRemaining: this.secondsRemaining - 1,
       };
     default:
       throw new Error("Action Unknown");
@@ -58,10 +66,10 @@ function reducer(state, action) {
 
 export default function App() {
   //  const [state, dispatch] = useReducer(
-  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
-    reducer,
-    intialState
-  );
+  const [
+    { questions, status, index, answer, points, secondsRemaining },
+    dispatch,
+  ] = useReducer(reducer, intialState);
   const numQuestions = questions.length;
   const maxPosiblePoints = questions.reduce((pre, cur) => pre + cur.points, 0);
 
@@ -114,12 +122,15 @@ export default function App() {
               dispatch={dispatch}
               answer={answer}
             />
-            <NextButton
-              dispatch={dispatch}
-              answer={answer}
-              index={index}
-              numQuestions={numQuestions}
-            />
+            <Footer>
+              <Timer dispatch={dispatch} secondsRemaining={secondsRemaining} />
+              <NextButton
+                dispatch={dispatch}
+                answer={answer}
+                index={index}
+                numQuestions={numQuestions}
+              />
+            </Footer>
           </>
         )}
         {status === "finished" && (
