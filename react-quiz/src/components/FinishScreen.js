@@ -2,6 +2,7 @@ import React from "react";
 
 export default function FinishScreen({ points, maxPossiblePoints, dispatch }) {
   const percentage = (points / maxPossiblePoints) * 100;
+  console.log("This is finale screen");
 
   return (
     <>
